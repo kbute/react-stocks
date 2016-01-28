@@ -18,20 +18,63 @@
       // the script tag loading scripts/example.js and start writing code here.
       // tutorial.js
 
-      // tutorial8.js
-      var data = [
-        {id: 1, author: "Pete Hunt", text: "This is one comment"},
-        {id: 2, author: "Jordan Walke", text: "This is *another* 1 comment"}
-      ];
-
       var StockTable = React.createClass({
-        render: function () {
+        loadStocksFromYahoo: function() {
+          $.ajax({
+             url: this.props.yahooUrl, 
+             dataType: 'json',
+             cache: false,
+             success: function(data) {
+              this.setState({data: data.resources});
+             }.bind(this),
+             error: function(xhr, status, err) {
+              console.error(this.props.url, status, err.toString());
+             }.bind(this)
+          });
+        },
+        getInitialState: function() {
+          return {data: []};
+        },
+        componentDidMount: function() {
+          this.loadStocksFromYahoo();
+          setInterval(this.loadStocksFromYahoo, this.props.pollInterval);
+        }
+        render: function() {
           return (
             <table>
+              <StockTableHeadingContainer />
+              <Stock data={this.state.data} />
             </table>
           );
         }
       });
+
+      var StockTableHeadingContainer = React.createClass({
+        render: function() {
+          return (
+            <thead>
+            </thead>
+          );
+        }
+      });
+
+      var Stock = React.createClass({
+        render: function() {
+          return (
+            <tr>
+            </tr>
+          );
+        }
+      })
+
+      var StockCell = React.createClass({
+        render: function() {
+          return (
+            <td>
+            </td>
+          );
+        }
+      })
 
       var CommentBox = React.createClass ({
         loadCommentsFromServer: function() {
