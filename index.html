@@ -38,7 +38,7 @@
         componentDidMount: function() {
           this.loadStocksFromYahoo();
           setInterval(this.loadStocksFromYahoo, this.props.pollInterval);
-        }
+        },
         render: function() {
           return (
             <table>
