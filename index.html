@@ -21,15 +21,15 @@
       var StockTable = React.createClass({
         loadStocksFromYahoo: function() {
           $.ajax({
-             url: this.props.yahooUrl, 
-             dataType: 'json',
-             cache: false,
-             success: function(data) {
+            url: this.props.yahooUrl, 
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
               this.setState({data: data.resources});
-             }.bind(this),
-             error: function(xhr, status, err) {
+            }.bind(this),
+            error: function(xhr, status, err) {
               console.error(this.props.url, status, err.toString());
-             }.bind(this)
+            }.bind(this)
           });
         },
         getInitialState: function() {
@@ -65,7 +65,7 @@
             </tr>
           );
         }
-      })
+      });
 
       var StockCell = React.createClass({
         render: function() {
@@ -74,7 +74,7 @@
             </td>
           );
         }
-      })
+      });
 
       var CommentBox = React.createClass ({
         loadCommentsFromServer: function() {
