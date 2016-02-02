@@ -26,8 +26,8 @@
             dataType: 'json',
             cache: false,
             success: function(data) {
-              console.log(data);
-              this.setState({data: data.query.results});
+              console.log(data.query.results.quote);
+              this.setState({data: data.query.results.quote});
             }.bind(this),
             error: function(xhr, status, err) {
               console.error(this.props.url, status, err.toString());
@@ -45,9 +45,7 @@
           return (
             <table>
               <StockTableHeadingContainer />
-              <tbody>
-                <Stock data={this.state.data} />
-              </tbody>
+              <Stock data={this.state.data} />
             </table>
           );
         }
@@ -64,9 +62,17 @@
 
       var Stock = React.createClass({
         render: function() {
+          console.log('Stock',this.props.data);
+          var stockRows = this.props.data.map(function(row){
+            return (
+              <tr>
+              </tr>
+            );
+          });
           return (
-            <tr>
-            </tr>
+            <tbody>
+            {stockRows}
+            </tbody>
           );
         }
       });
