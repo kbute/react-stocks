@@ -22,10 +22,12 @@
         loadStocksFromYahoo: function() {
           $.ajax({
             url: this.props.yahooUrl, 
+            jsonp: 'callback',
             dataType: 'json',
             cache: false,
             success: function(data) {
-              this.setState({data: data.resources});
+              console.log(data);
+              this.setState({data: data.query.results});
             }.bind(this),
             error: function(xhr, status, err) {
               console.error(this.props.url, status, err.toString());
@@ -43,7 +45,9 @@
           return (
             <table>
               <StockTableHeadingContainer />
-              <Stock data={this.state.data} />
+              <tbody>
+                <Stock data={this.state.data} />
+              </tbody>
             </table>
           );
         }
@@ -197,7 +201,7 @@
       });
 
       ReactDOM.render(
-        <CommentBox url="/api/comments" pollInterval={2000} />,
+        <StockTable yahooUrl="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22YHOO%22%2C%22AAPL%22%2C%22GOOG%22%2C%22MSFT%22)%0A%09%09&format=json&diagnostics=true&env=http%3A%2F%2Fdatatables.org%2Falltables.env&callback=" pollInterval={2000} />,
         document.getElementById('content')
       );
     </script>
