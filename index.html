@@ -45,7 +45,7 @@
           return (
             <table>
               <StockTableHeadingContainer />
-              <Stock data={this.state.data} />
+              <StockList data={this.state.data} />
             </table>
           );
         }
@@ -60,7 +60,7 @@
         }
       });
 
-      var Stock = React.createClass({
+      var StockList = React.createClass({
         render: function() {
           console.log('Stock',this.props.data);
           var stockRows = this.props.data.map(function(row){
