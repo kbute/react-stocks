@@ -63,9 +63,9 @@
       var StockList = React.createClass({
         render: function() {
           console.log('Stock',this.props.data);
-          var stockRows = this.props.data.map(function(row){
+          var stockRows = this.props.data.map(function(row, i){
             return (
-              <StockProperties data={row} />
+              <StockProperties key={i} data={row} />
             );
           });
           return (
@@ -84,11 +84,11 @@
           });
           var stockCells = stockArr.map(function(value,i){
             return (
-              <td>{value}</td>
+              <td key={i}>{value}</td>
             );
           });
           return (
-            <tr>
+            <tr key={this.props.key}>
               {stockCells}
             </tr>
           );
