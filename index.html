@@ -65,8 +65,7 @@
           console.log('Stock',this.props.data);
           var stockRows = this.props.data.map(function(row){
             return (
-              <tr>
-              </tr>
+              <StockProperties data={row} />
             );
           });
           return (
@@ -77,11 +76,21 @@
         }
       });
 
-      var StockCell = React.createClass({
+      var StockProperties = React.createClass({
         render: function() {
+          var data = this.props.data;
+          var stockArr = $.map(data,function(value,index){
+            return [value];
+          });
+          var stockCells = stockArr.map(function(value,i){
+            return (
+              <td>{value}</td>
+            );
+          });
           return (
-            <td>
-            </td>
+            <tr>
+              {stockCells}
+            </tr>
           );
         }
       });
