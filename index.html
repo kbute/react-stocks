@@ -104,13 +104,23 @@
           var data = this.props.data;
           var stockCells = $.map(data,function(value,i){
             return (
-              <td key={i}>{value}</td>
+              <StockCell key={i} data={value} />
             );
           });
           return (
             <tr key={this.props.key}>
               {stockCells}
             </tr>
+          );
+        }
+      });
+
+      var StockCell = React.createClass({
+        render: function() {
+          return(
+            <td key={this.props.key}>
+              {this.props.data}
+            </td>
           );
         }
       });
