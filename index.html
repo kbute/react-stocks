@@ -46,14 +46,14 @@
 
           return (
             <table>
-              <StockTableHeadings data={quotes} />
+              <StockTableHeading data={quotes} />
               <StockList data={quotes} />
             </table>
           );
         }
       });
 
-      var StockTableHeadings = React.createClass({
+      var StockTableHeading = React.createClass({
         render: function() {
           var stockHeadings = '';
           if(this.props.data.length > 0) {
