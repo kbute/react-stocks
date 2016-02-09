@@ -41,23 +41,45 @@
           setInterval(this.loadStocksFromYahoo, this.props.pollInterval);
         },
         render: function() {
+
+          var quotes = this.state.data;
+
           return (
             <table>
-              <StockTableHeadingContainer />
-              <StockList data={this.state.data} />
+              <StockTableHeadings data={quotes} />
+              <StockList data={quotes} />
             </table>
           );
         }
       });
 
-      var StockTableHeadingContainer = React.createClass({
+      var StockTableHeadings = React.createClass({
         render: function() {
+          var stockHeadings = '';
+          if(this.props.data.length > 0) {
+            stockHeadings = $.map(this.props.data[0], function(value,i){
+              return (
+                <StockHeadings key={i} data={i} />
+              );
+            });
+          }
           return (
             <thead>
+              <tr>
+                {stockHeadings}
+              </tr>
             </thead>
           );
         }
-      });
+      })
+
+      var StockHeadings = React.createClass({
+        render: function() {
+          return (
+            <th key={this.props.key}>{this.props.data}</th>
+          );
+        }
+      })
 
       var StockList = React.createClass({
         render: function() {
@@ -74,6 +96,8 @@
           );
         }
       });
+
+
 
       var StockProperties = React.createClass({
         render: function() {
