@@ -78,10 +78,7 @@
       var StockProperties = React.createClass({
         render: function() {
           var data = this.props.data;
-          var stockArr = $.map(data,function(value,index){
-            return [value];
-          });
-          var stockCells = stockArr.map(function(value,i){
+          var stockCells = $.map(data,function(value,i){
             return (
               <td key={i}>{value}</td>
             );
