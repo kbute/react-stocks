@@ -43,6 +43,34 @@
         render: function() {
 
           var quotes = this.state.data;
+          var sortHeading = 'Change';
+
+          switch(sortHeading){
+            //Alphabetic sort
+            case 'symbol':
+            case 'Currency':
+            case 'Name':
+            case 'Symbol':
+            case 'StockExchange':
+
+              quotes.sort(function(a, b) {
+                return +(a[sortHeading] > b[sortHeading]) || +(a[sortHeading] === b[sortHeading]) - 1;
+              });
+
+            break;
+            //Numeric Sort
+            case 'Ask':
+            case 'AverageDailyVolume':
+            case 'Bid':
+            case 'Change':
+
+              quotes.sort(function(a, b) {
+                return Number(a[sortHeading]) - Number(b[sortHeading]);
+              });
+
+            break;
+
+          }
 
           return (
             <table>
