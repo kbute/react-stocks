@@ -129,8 +129,19 @@
         render: function() {
           var data = this.props.data;
           var stockCells = $.map(data,function(value,i){
+
+            //add class green or red to cell
+            var className = '';
+            if(i==='Change'){
+              if(Number(value) >= 0){
+                className = 'green';
+              }else{
+                className = 'red';
+              }
+            }
+
             return (
-              <StockCell key={i} data={value} />
+              <StockCell key={i} data={value} className={className} />
             );
           });
           return (
@@ -144,7 +155,7 @@
       var StockCell = React.createClass({
         render: function() {
           return(
-            <td key={this.props.key}>
+            <td key={this.props.key} className={this.props.className} >
               {this.props.data}
             </td>
           );
@@ -152,7 +163,7 @@
       });
 
       ReactDOM.render(
-        <StockTable yahooUrl="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22YHOO%22%2C%22AAPL%22%2C%22GOOG%22%2C%22MSFT%22)%0A%09%09&format=json&diagnostics=true&env=http%3A%2F%2Fdatatables.org%2Falltables.env&callback=" pollInterval={2000} />,
+        <StockTable yahooUrl="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22YHOO%22%2C%22AAPL%22%2C%22GOOG%22%2C%22MSFT%22%2C%22CSIQ%22%2C%22FSLR%22)%0A%09%09&format=json&diagnostics=true&env=http%3A%2F%2Fdatatables.org%2Falltables.env&callback=" pollInterval={2000} />,
         document.getElementById('content')
       );
     </script>
