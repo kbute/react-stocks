@@ -34,16 +34,20 @@
           });
         },
         getInitialState: function() {
-          return {data: []};
+          return {data: [], sortHeading: ''};
         },
         componentDidMount: function() {
           this.loadStocksFromYahoo();
           setInterval(this.loadStocksFromYahoo, this.props.pollInterval);
         },
+        handleChildClick: function(event) {
+          console.log(event.target.innerHTML);
+          this.setState({sortHeading: event.target.innerHTML});
+        },
         render: function() {
 
           var quotes = this.state.data;
-          var sortHeading = 'Change';
+          var sortHeading = this.state.sortHeading;
 
           switch(sortHeading){
             //Alphabetic sort
@@ -74,7 +78,7 @@
 
           return (
             <table>
-              <StockTableHeading data={quotes} />
+              <StockTableHeading onClick={this.handleChildClick} data={quotes} />
               <StockList data={quotes} />
             </table>
           );
@@ -84,10 +88,11 @@
       var StockTableHeading = React.createClass({
         render: function() {
           var stockHeadings = '';
+          var self = this;
           if(this.props.data.length > 0) {
             stockHeadings = $.map(this.props.data[0], function(value,i){
               return (
-                <StockHeadings key={i} data={i} />
+                <StockHeadings onClick={self.props.onClick} key={i} data={i} />
               );
             });
           }
@@ -102,9 +107,13 @@
       })
 
       var StockHeadings = React.createClass({
+        handleClick: function(event) {
+          console.log('click',event.target.innerHTML);
+        },
         render: function() {
+          var self = this;
           return (
-            <th key={this.props.key}>{this.props.data}</th>
+            <th onClick={this.props.onClick} key={this.props.key}>{this.props.data}</th>
           );
         }
       })
