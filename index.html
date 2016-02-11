@@ -34,7 +34,7 @@
           });
         },
         getInitialState: function() {
-          return {data: [], sortHeading: ''};
+          return {data: [], sortHeading: '', sortOrder: 'accending'};
         },
         componentDidMount: function() {
           this.loadStocksFromYahoo();
@@ -42,12 +42,24 @@
         },
         handleChildClick: function(event) {
           console.log(event.target.innerHTML);
-          this.setState({sortHeading: event.target.innerHTML});
+          var sortOrder = this.state.sortOrder;
+          if(this.state.sortHeading !== event.target.innerHTML) {
+            sortOrder = 'accending';//reset sort order if sort heading was not the previously selected heading
+          }else{
+            //if selected heading was the same as previously selected heading, then toggle between accending and decending
+            if(this.state.sortOrder === 'accending'){
+              sortOrder = 'decending';
+            }else{
+              sortOrder = 'accending';
+            }
+          }
+          this.setState({sortHeading: event.target.innerHTML, sortOrder: sortOrder});
         },
         render: function() {
 
           var quotes = this.state.data;
           var sortHeading = this.state.sortHeading;
+          var sortOrder = this.state.sortOrder;
 
           switch(sortHeading){
             //Alphabetic sort
@@ -69,7 +81,11 @@
             case 'Change':
 
               quotes.sort(function(a, b) {
-                return Number(a[sortHeading]) - Number(b[sortHeading]);
+                if(sortOrder === 'accending'){
+                  return Number(a[sortHeading]) - Number(b[sortHeading]);
+                }else{
+                  return Number(b[sortHeading]) - Number(a[sortHeading]);
+                }
               });
 
             break;
