@@ -70,7 +70,11 @@
             case 'StockExchange':
 
               quotes.sort(function(a, b) {
-                return +(a[sortHeading] > b[sortHeading]) || +(a[sortHeading] === b[sortHeading]) - 1;
+                if(sortOrder === 'accending'){
+                  return +(a[sortHeading] > b[sortHeading]) || +(a[sortHeading] === b[sortHeading]) - 1;
+                }else{
+                  return +(b[sortHeading] > a[sortHeading]) || +(b[sortHeading] === a[sortHeading]) - 1;
+                }
               });
 
             break;
