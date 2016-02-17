@@ -39,16 +39,18 @@
           this.setState({numberOfStocksToShow: (windowHeight/56) + 20});//(window height / height of cell) + padding for scrolling
         },
         getInitialState: function() {
-          return {data: [], sortHeading: '', sortOrder: 'accending', windowHeight: window.innerHeight, numberOfStocksToShow: 0};
+          return {data: [], sortHeading: '', sortOrder: 'accending', windowHeight: window.innerHeight, numberOfStocksToShow: 0, startingIndex: 0, scrollStarted: false};
         },
         componentDidMount: function() {
           this.loadStocksFromYahoo();
           setInterval(this.loadStocksFromYahoo, this.props.pollInterval);
           this.getNumberOfStocksToShow();
           window.addEventListener('resize', this.handleResize);
+          window.addEventListener('scroll', this.handleScroll);
         },
         componentWillUnmount: function() {
           window.removeEventListener('resize', this.handleResize);
+          window.removeEventListener('scroll', this.handleScroll);
         },
         handleChildClick: function(event) {
           console.log(event.target.innerHTML);
@@ -68,12 +70,21 @@
         handleResize: function(e) {
           this.setState({windowHeight: window.innerHeight});
         },
+        handleScroll: function(e) {
+          var scrollY = window.scrollY;
+          var startingIndex = 0;
+          if(scrollY > 56){
+            startingIndex = Math.floor(scrollY/56);
+          }
+          this.setState({startingIndex: startingIndex, scrollStarted: true});
+        },
         render: function() {
 
           var quotes = this.state.data;
           var sortHeading = this.state.sortHeading;
           var sortOrder = this.state.sortOrder;
           var numberOfStocksToShow = this.state.numberOfStocksToShow;
+          var startingIndex = this.state.startingIndex;
 
           switch(sortHeading){
             //Alphabetic sort
@@ -113,7 +124,7 @@
           return (
             <table>
               <StockTableHeading onClick={this.handleChildClick} data={quotes} />
-              <StockList data={quotes} numberOfStocksToShow={numberOfStocksToShow} />
+              <StockList data={quotes} numberOfStocksToShow={numberOfStocksToShow} startingIndex={startingIndex}/>
             </table>
           );
         }
@@ -156,11 +167,16 @@
         render: function() {
           console.log('Stock',this.props.data);
           var numberOfStocksToShow = this.props.numberOfStocksToShow;
-          var startIndexStocksToShow = 0;
+          var startIndexStocksToShow = this.props.startingIndex;
           var endIndexStocksToShow = startIndexStocksToShow + numberOfStocksToShow;
+          var scrollStarted = this.props.scrollStarted;
           var stockRows = this.props.data.map(function(row, i){
 
-            if(i>=startIndexStocksToShow && i<endIndexStocksToShow) {
+            if(scrollStarted && i>=startIndexStocksToShow && i<endIndexStocksToShow) {
+              return (
+                <StockProperties key={i} data={row} />
+              );
+            } else {
               return (
                 <StockProperties key={i} data={row} />
               );
