@@ -26,6 +26,7 @@
             cache: false,
             success: function(data) {
               console.log(data.query.results.quote);
+              this.getNumberOfStocksToShow();
               this.setState({data: data.query.results.quote});
             }.bind(this),
             error: function(xhr, status, err) {
@@ -33,12 +34,17 @@
             }.bind(this)
           });
         },
+        getNumberOfStocksToShow: function() {
+          var windowHeight = this.state.windowHeight;
+          this.setState({numberOfStocksToShow: (windowHeight/56) + 20});//(window height / height of cell) + padding for scrolling
+        },
         getInitialState: function() {
-          return {data: [], sortHeading: '', sortOrder: 'accending',windowHeight: window.innerHeight};
+          return {data: [], sortHeading: '', sortOrder: 'accending', windowHeight: window.innerHeight, numberOfStocksToShow: 0};
         },
         componentDidMount: function() {
           this.loadStocksFromYahoo();
           setInterval(this.loadStocksFromYahoo, this.props.pollInterval);
+          this.getNumberOfStocksToShow();
           window.addEventListener('resize', this.handleResize);
         },
         componentWillUnmount: function() {
@@ -67,6 +73,7 @@
           var quotes = this.state.data;
           var sortHeading = this.state.sortHeading;
           var sortOrder = this.state.sortOrder;
+          var numberOfStocksToShow = this.state.numberOfStocksToShow;
 
           switch(sortHeading){
             //Alphabetic sort
@@ -106,7 +113,7 @@
           return (
             <table>
               <StockTableHeading onClick={this.handleChildClick} data={quotes} />
-              <StockList data={quotes} />
+              <StockList data={quotes} numberOfStocksToShow={numberOfStocksToShow} />
             </table>
           );
         }
@@ -148,10 +155,17 @@
       var StockList = React.createClass({
         render: function() {
           console.log('Stock',this.props.data);
+          var numberOfStocksToShow = this.props.numberOfStocksToShow;
+          var startIndexStocksToShow = 0;
+          var endIndexStocksToShow = startIndexStocksToShow + numberOfStocksToShow;
           var stockRows = this.props.data.map(function(row, i){
-            return (
-              <StockProperties key={i} data={row} />
-            );
+
+            if(i>=startIndexStocksToShow && i<endIndexStocksToShow) {
+              return (
+                <StockProperties key={i} data={row} />
+              );
+            }
+            
           });
           return (
             <tbody>
