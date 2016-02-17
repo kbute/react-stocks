@@ -39,7 +39,7 @@
           this.setState({numberOfStocksToShow: (windowHeight/56) + 20});//(window height / height of cell) + padding for scrolling
         },
         getInitialState: function() {
-          return {data: [], sortHeading: '', sortOrder: 'accending', windowHeight: window.innerHeight, numberOfStocksToShow: 0, startingIndex: 0, scrollStarted: false};
+          return {data: [], sortHeading: '', sortOrder: 'accending', windowHeight: window.innerHeight, numberOfStocksToShow: 0, startingIndex: 0, eventInitiated: false};
         },
         componentDidMount: function() {
           this.loadStocksFromYahoo();
@@ -76,7 +76,7 @@
           if(scrollY > 56){
             startingIndex = Math.floor(scrollY/56);
           }
-          this.setState({startingIndex: startingIndex, scrollStarted: true});
+          this.setState({startingIndex: startingIndex, eventInitiated: true});
         },
         render: function() {
 
@@ -169,10 +169,10 @@
           var numberOfStocksToShow = this.props.numberOfStocksToShow;
           var startIndexStocksToShow = this.props.startingIndex;
           var endIndexStocksToShow = startIndexStocksToShow + numberOfStocksToShow;
-          var scrollStarted = this.props.scrollStarted;
+          var eventInitiated = this.props.eventInitiated;
           var stockRows = this.props.data.map(function(row, i){
 
-            if(scrollStarted && i>=startIndexStocksToShow && i<endIndexStocksToShow) {
+            if(eventInitiated && i>=startIndexStocksToShow && i<endIndexStocksToShow) {
               return (
                 <StockProperties key={i} data={row} />
               );
