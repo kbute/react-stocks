@@ -223,9 +223,11 @@
         render: function() {
           var cellHeight = 56;
           return(
-            <td key={this.props.key} className={this.props.className} style={{height:cellHeight+'px'}}>
-              {this.props.data}
-            </td>
+            <ReactCSSTransitionGroup transitionName={this.props.className} transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
+              <td key={this.props.key} style={{height:cellHeight+'px'}}>
+                {this.props.data}
+              </td>
+            </ReactCSSTransitionGroup>
           );
         }
       });
@@ -235,5 +237,40 @@
         document.getElementById('content')
       );
     </script>
+    <style>
+      .red-enter,
+      .green-enter {
+        background-color: #fff;
+      }
+
+      .green-enter.green-enter-active,
+      .red-enter.green-enter-active {
+        -webkit-transition: background-color 1000ms linear;
+        -moz-transition: background-color 1000ms linear;
+        -o-transition: background-color 1000ms linear;
+        -ms-transition: background-color 1000ms linear;
+        transition: background-color 1000ms linear;
+      }
+
+      .green-enter.green-enter-active,
+      .green-leave {
+        background-color: green;
+      }
+
+      .red-enter.red-enter-active,
+      .red-leave {
+        background-color: red;
+      }
+
+      .green-leave.green-leave-active,
+      .red-leave.red-leave-active {
+        background-color: #fff;
+        -webkit-transition: background-color 1000ms linear;
+        -moz-transition: background-color 1000ms linear;
+        -o-transition: background-color 1000ms linear;
+        -ms-transition: background-color 1000ms linear;
+        transition: background-color 1000ms linear;
+      }
+    </style>
   </body>
 </html>
