@@ -18,6 +18,8 @@
       // the script tag loading scripts/example.js and start writing code here.
       // tutorial.js
 
+      var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
       var StockTable = React.createClass({
         loadStocksFromYahoo: function() {
           $.ajax({
